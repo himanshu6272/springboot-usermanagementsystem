@@ -315,13 +315,7 @@ $(document).ready(function () {
     }
   };
 
-  $("#dob").datepicker({
-      dateFormat: "yy-mm-dd",
-      maxDate: 0,
-      changeMonth: true,
-      changeYear: true,
-      yearRange: "-100:+0"
-    });
+
 
     $("#dob").on('change', function(){
         dateOfBirth();
@@ -411,14 +405,18 @@ $(document).ready(function () {
   $("#update-user-btn").click(lastName);
   $("#update-user-btn").click(mobileNumber);
   $("#submit-btn").click(emailAddress);
+  $("#forgot-submit-btn").click(emailAddress);
   $("#submit-btn").click(dateOfBirth);
   $("#update-user-btn").click(dateOfBirth);
   $("#submit-btn").click(securityQue);
+  $("#forgot-submit-btn").click(securityQue);
   $("#submit-btn").click(pwd);
+  $("#reset-submit-btn").click(pwd);
   $("#submit-btn").click(gender);
   $("#update-user-btn").click(gender);
   $("#submit-btn").click(role);
   $("#submit-btn").click(cnfPassword);
+  $("#reset-submit-btn").click(cnfPassword);
   $("#submit-btn").click(profilePhoto);
 
 

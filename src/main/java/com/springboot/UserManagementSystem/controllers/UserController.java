@@ -36,8 +36,8 @@ public class UserController {
                 throw new Exception("Please fill all the fields!!");
             }
             this.userService.createUser(user, file, cnfPassword, session);
-            model.addAttribute("user", new User());
-            return "register";
+            model.addAttribute("user", user);
+            return "redirect:/register";
         } catch (Exception e) {
             log.error(e);
             model.addAttribute("user", user);
@@ -51,7 +51,6 @@ public class UserController {
     public String editUser(@ModelAttribute("user") User user, @RequestParam("id") int id, @RequestParam("file") MultipartFile file, HttpServletRequest request, @RequestParam("aid") String [] addressid){
         try {
             this.userService.updateUserDetails(user, id, file, request, request.getSession(), addressid);
-            request.getSession().setAttribute("message", new ApiResponse("User Update Successfully", null, "alert-success"));
         }catch (Exception e){
             request.getSession().setAttribute("message", new ApiResponse(e.getLocalizedMessage(), null, "alert-danger"));
         }

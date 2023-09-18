@@ -111,7 +111,6 @@ public class UserServiceImpl implements UserService {
             addressList.add(address);
         }
 
-        try {
             List<Address> addresses = this.addressRepository.getAddressByUserId(user.getId());
             int index = 0;
             int oldAddressid[] = new int[addresses.size()];
@@ -124,21 +123,19 @@ public class UserServiceImpl implements UserService {
                     if (oldAddressid[index] == addrssid) {
                         count++;
                     } else {
-                        this.addressRepository.deleteById(addrssid);
-                        log.info("address deleted");//user Address deleted
+
+                        this.addressRepository.deleteAddress(address.getAid());
+                        log.info("address deleted");
+                       //user Address deleted
                     }
                 } else {
-                    this.addressRepository.deleteById(address.getAid());
-                    log.info("address deleted");//user Address deleted
+                    this.addressRepository.deleteAddress(address.getAid());
+                    log.info("address deleted");
                 }
                 index++;
             }
 
-        }catch (Exception e){
-            session.setAttribute("message", new ApiResponse(e.getLocalizedMessage(), null, "alert-danger"));
-        }
-
-        if (addressList == null) {
+        if (addressList.size() == 0) {
             session.setAttribute("message", new ApiResponse("Please add at least one address!", null, "alert-danger"));
         } else {
 
@@ -157,6 +154,7 @@ public class UserServiceImpl implements UserService {
                     user.setImage(file.getBytes());
                 }
                 this.userRepository.save(user);
+                session.setAttribute("message", new ApiResponse("User Updated Successfully", null, "alert-success"));
             } catch (Exception e) {
                 session.setAttribute("message", new ApiResponse(e.getLocalizedMessage(), null, "alert-danger"));
             }
@@ -171,6 +169,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(User user) {
         this.userRepository.delete(user);
+    }
+
+    @Override
+    public void updatePassword(String email, String password, HttpSession session) {
+        session.setAttribute("message", new ApiResponse("Password changed Successfully", null, "alert-success"));
+        this.userRepository.updatePassword(password, email);
     }
 
 

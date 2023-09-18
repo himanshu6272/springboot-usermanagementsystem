@@ -23,4 +23,6 @@ public interface UserService {
     User getUserByEmail(String email);
 
     void deleteUser(User user);
+
+    void updatePassword(String email, String password, HttpSession session);
 }

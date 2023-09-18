@@ -239,6 +239,14 @@
 <script th:src="@{/js/jquery-ui.js}"></script>
 <script th:src="@{/js/custom.js}"></script>
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-<!--<script th:src="@{/js/validation.js}" ></script>-->
+<script>
+    $("#dob").datepicker({
+      dateFormat: "yy-mm-dd",
+      maxDate: 0,
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "-100:+0"
+    });
+</script>
 </body>
 </html>
