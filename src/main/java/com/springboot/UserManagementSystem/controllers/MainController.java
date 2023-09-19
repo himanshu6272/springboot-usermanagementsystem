@@ -95,11 +95,8 @@ public class MainController {
     public String adminPage(Model model, HttpSession session, HttpServletResponse res) {
         Object obj = session.getAttribute("loggedIn");
         if (obj == null) {
-            return "login";
+            return "redirect:/login";
         } else if (((String) obj).equals("admin")) {
-            res.setHeader("Cache-Control", "no-chache,no-store,must-revalidate");
-            res.setHeader("Pragma", "no-chache");
-            res.setDateHeader("Expires", 0);
             int id = (int) session.getAttribute("adminId");
             List<User> userList = this.userService.getAllUsers();
             List<User> users = new ArrayList<>();
@@ -119,23 +116,30 @@ public class MainController {
 
     @GetMapping("/editPage")
     public String editPage(Model model, HttpSession session) {
-        int id = (int) session.getAttribute("userId");
-        User user = this.userService.getUserById(id);
-        String base64Image = "data:image/jpg;base64," + Base64.getEncoder().encodeToString(user.getImage()) + "";
-        model.addAttribute("user", user);
-        model.addAttribute("imgUrl", base64Image);
-        return "edit";
+        if (session==null){
+            return "redirect:/login";
+        }else {
+            String loggedIn = (String) session.getAttribute("loggedIn");
+            if (loggedIn == null){
+                return "redirect:/login";
+            }else {
+                int id = (int) session.getAttribute("userId");
+                User user = this.userService.getUserById(id);
+                String base64Image = "data:image/jpg;base64," + Base64.getEncoder().encodeToString(user.getImage()) + "";
+                model.addAttribute("user", user);
+                model.addAttribute("imgUrl", base64Image);
+                return "edit";
+            }
+        }
+
     }
 
     @GetMapping("/viewPage")
     public String viewPage(Model model, HttpSession session, HttpServletResponse res) {
         Object obj = session.getAttribute("loggedIn");
         if (obj == null) {
-            return "login";
+            return "redirect:/login";
         } else if (((String) obj).equals("user")) {
-            res.setHeader("Cache-Control", "no-chache,no-store,must-revalidate");
-            res.setHeader("Pragma", "no-chache");
-            res.setDateHeader("Expires", 0);
             int id = (int) session.getAttribute("userId");
             User user = this.userService.getUserById(id);
             String base64Image = "data:image/jpg;base64," + Base64.getEncoder().encodeToString(user.getImage()) + "";

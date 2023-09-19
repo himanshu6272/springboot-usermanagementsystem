@@ -33,8 +33,22 @@ public class ForgotController {
     UserService userService;
 
     @GetMapping("/forgot")
-    public String forgotPage(){
-        return "forgot";
+    public String forgotPage(HttpSession session){
+        if (session == null) {
+            return "forgot";
+        } else {
+            String loggedIn = (String) session.getAttribute("loggedIn");
+            if (loggedIn == null) {
+                return "forgot";
+            } else {
+                if (loggedIn.equals("admin")) {
+                    return "redirect:/admin";
+                } else {
+                    return "redirect:/viewPage";
+                }
+            }
+
+        }
     }
 
     @PostMapping("/forgotPassword")
@@ -64,11 +78,27 @@ public class ForgotController {
     }
 
     @GetMapping("/reset/{email}")
-    public String resetPage(@PathVariable("email") String email, Model model){
+    public String resetPage(@PathVariable("email") String email, Model model, HttpSession session){
         byte[] bytes = decoder.decode(email);
         String decodedEmail = new String(bytes, StandardCharsets.UTF_8);
-        model.addAttribute("email", decodedEmail);
-        return "reset";
+
+        if (session == null) {
+            model.addAttribute("email", decodedEmail);
+            return "reset";
+        } else {
+            String loggedIn = (String) session.getAttribute("loggedIn");
+            if (loggedIn == null) {
+                model.addAttribute("email", decodedEmail);
+                return "reset";
+            } else {
+                if (loggedIn.equals("admin")) {
+                    return "redirect:/admin";
+                } else {
+                    return "redirect:/viewPage";
+                }
+            }
+
+        }
     }
 
     @PostMapping("/resetPassword")

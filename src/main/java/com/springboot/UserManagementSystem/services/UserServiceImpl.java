@@ -113,11 +113,15 @@ public class UserServiceImpl implements UserService {
                 address.setUser(user);
                 addressList.add(address);
             }
+        }
 
             List<Address> addresses = this.addressRepository.getAddressByUserId(user.getId());
             int index = 0;
             int oldAddressid[] = new int[addresses.size()];
-            int addressIdLength = addressid.length;
+            int addressIdLength = 0;
+            if(addressid != null) {
+                addressIdLength = addressid.length;
+            }
             int count = 0;
             for (Address address : addresses) {
                 oldAddressid[index] = address.getAid();
@@ -126,18 +130,26 @@ public class UserServiceImpl implements UserService {
                     if (oldAddressid[index] == addrssid) {
                         count++;
                     } else {
+                        if (addressList.size() != 0){
+                            this.addressRepository.deleteAddress(address.getAid());
+                            log.info("address deleted");
+                        }else {
+                            throw new Exception("Please add at least one address!");
+                        }
 
-                        this.addressRepository.deleteAddress(address.getAid());
-                        log.info("address deleted");
                         //user Address deleted
                     }
                 } else {
-                    this.addressRepository.deleteAddress(address.getAid());
-                    log.info("address deleted");
+                    if (addressList.size() != 0){
+                        this.addressRepository.deleteAddress(address.getAid());
+                        log.info("address deleted");
+                    }else {
+                        throw new Exception("Please add at least one address!");
+                    }
                 }
                 index++;
             }
-        }
+
             if (addressList.size() == 0) {
                 session.setAttribute("message", new ApiResponse("Please add at least one address!", null, "alert-danger"));
                 throw new Exception("Please add at least one address!");

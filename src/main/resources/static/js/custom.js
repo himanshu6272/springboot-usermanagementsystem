@@ -1,4 +1,13 @@
 $(document).ready(function () {
+
+        if($(".table-bordered").find('tr').length == 1){
+                $(".table-container").addClass('d-none');
+            }else{
+                 $(".table-container").removeClass('d-none');
+            }
+
+
+
   var flag = true;
   let message = $("#message").text();
   if (message === null || message === '' || message === undefined) {
@@ -129,6 +138,12 @@ $(document).ready(function () {
 
   $(document).on("click", ".remove-address-btn", function () {
     $(this).closest("tr").remove();
+    if($(".table-bordered").find('tr').length == 1){
+                    $(".table-container").addClass('d-none');
+                }else{
+                     $(".table-container").removeClass('d-none');
+                }
+
   });
 
   $(document).on("click", ".edit-address-btn", function () {
@@ -330,22 +345,22 @@ $(document).ready(function () {
         $("#dateHelp").empty();
       });
 
-//  $("#profile-photo").on('change', function () {
-//    const imagePreview = $("#profile-img");
-//    let inputFile = $(this);
-//    let files = inputFile[0].files;
-//    let fileName = files[0].name;
-//    let extension = fileName.substr(fileName.lastIndexOf("."));
-//    let allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-//    let isAllowed = allowedExtensionsRegx.test(extension);
-//    if (isAllowed) {
-//      $("#profilephotoHelp").empty();
-//      return true;
-//    } else {
-//      $("#profilephotoHelp").html("please upload valid file").addClass("text-danger");
-//      return false;
-//    }
-//  })
+  $("#profile-photo").on('change', function () {
+    const imagePreview = $("#profile-img");
+    let inputFile = $(this);
+    let files = inputFile[0].files;
+    let fileName = files[0].name;
+    let extension = fileName.substr(fileName.lastIndexOf("."));
+    let allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    let isAllowed = allowedExtensionsRegx.test(extension);
+    if (isAllowed) {
+      $("#profilephotoHelp").empty();
+      return true;
+    } else {
+      $("#profilephotoHelp").html("please upload valid file").addClass("text-danger");
+      return false;
+    }
+  })
 
   $(".gender").click(function () {
     $("#genderHelp").empty();
