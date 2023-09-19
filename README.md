@@ -18,6 +18,7 @@
 
 * Clone the repository: git clone git@github.com:himanshu6272/springboot-usermanagementsystem.git
 * Install the necessary dependencies.
+* Create database by firing the given query in MySQL DB: create database usermanagementsystem.
 * Configure the database connection in the application.properties file.
 * Run the application by using mvn spring-boot:run command.
 

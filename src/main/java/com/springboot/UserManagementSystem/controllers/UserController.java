@@ -36,8 +36,7 @@ public class UserController {
                 throw new Exception("Please fill all the fields!!");
             }
             this.userService.createUser(user, file, cnfPassword, session);
-            model.addAttribute("user", user);
-            return "redirect:/register";
+            return "redirect:/login";
         } catch (Exception e) {
             log.error(e);
             model.addAttribute("user", user);
