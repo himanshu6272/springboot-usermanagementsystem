@@ -108,6 +108,8 @@ $(document).ready(function () {
       //                            '"><label>Country</label><br><input readonly class="country form-control" name="addresses['+id+'].country" value="'+country+
       //                            '"></div><small class="form-text addressesHelp"></small></div>';
       $("#addresses").append(addElement);
+      $(".table-container").removeClass("d-none");
+      $("#staticBackdrop").modal('hide');
       $("#inputStreet").val("");
       $("#inputCity").val("");
       $("#inputState").val("");

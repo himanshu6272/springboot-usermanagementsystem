@@ -84,12 +84,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserDetails(User user, int id, MultipartFile file, HttpServletRequest request, HttpSession session, @RequestParam("addressid") String [] addressid) {
+    public void updateUserDetails(User user, int id, MultipartFile file, HttpServletRequest request, HttpSession session) throws Exception {
         String[] street = request.getParameterValues("street");
         String[] city = request.getParameterValues("city");
         String[] state = request.getParameterValues("state");
         String[] country = request.getParameterValues("country");
         String[] zip = request.getParameterValues("zip");
+        String[] addressid = request.getParameterValues("aid");
 
         List<Address> addressList = new ArrayList<>();
         List<Address> newAddresses = user.getAddresses();
@@ -99,17 +100,19 @@ public class UserServiceImpl implements UserService {
                 addressList.add(address);
             }
         }
-        for (int i = 0; i < street.length; i++) {
-            Address address = new Address();
-            address.setAid(Integer.parseInt(addressid[i]));
-            address.setStreet(street[i]);
-            address.setCity(city[i]);
-            address.setCountry(country[i]);
-            address.setZip(zip[i]);
-            address.setState(state[i]);
-            address.setUser(user);
-            addressList.add(address);
-        }
+
+        if(street != null) {
+            for (int i = 0; i < street.length; i++) {
+                Address address = new Address();
+                address.setAid(Integer.parseInt(addressid[i]));
+                address.setStreet(street[i]);
+                address.setCity(city[i]);
+                address.setCountry(country[i]);
+                address.setZip(zip[i]);
+                address.setState(state[i]);
+                address.setUser(user);
+                addressList.add(address);
+            }
 
             List<Address> addresses = this.addressRepository.getAddressByUserId(user.getId());
             int index = 0;
@@ -126,7 +129,7 @@ public class UserServiceImpl implements UserService {
 
                         this.addressRepository.deleteAddress(address.getAid());
                         log.info("address deleted");
-                       //user Address deleted
+                        //user Address deleted
                     }
                 } else {
                     this.addressRepository.deleteAddress(address.getAid());
@@ -134,31 +137,33 @@ public class UserServiceImpl implements UserService {
                 }
                 index++;
             }
-
-        if (addressList.size() == 0) {
-            session.setAttribute("message", new ApiResponse("Please add at least one address!", null, "alert-danger"));
-        } else {
-
-            try {
-                User oldUser = this.userRepository.getById(id);
-                user.setEmail(oldUser.getEmail());
-                user.setRole(oldUser.getRole());
-                user.setAddresses(addressList);
-                user.setPassword(oldUser.getPassword());
-                user.setSecurityQuestion(oldUser.getSecurityQuestion());
-                user.setSecurityAnswer(oldUser.getSecurityAnswer());
-                log.info(file);
-                if (file.getBytes().length == 0) {
-                    user.setImage(oldUser.getImage());
-                } else {
-                    user.setImage(file.getBytes());
-                }
-                this.userRepository.save(user);
-                session.setAttribute("message", new ApiResponse("User Updated Successfully", null, "alert-success"));
-            } catch (Exception e) {
-                session.setAttribute("message", new ApiResponse(e.getLocalizedMessage(), null, "alert-danger"));
-            }
         }
+            if (addressList.size() == 0) {
+                session.setAttribute("message", new ApiResponse("Please add at least one address!", null, "alert-danger"));
+                throw new Exception("Please add at least one address!");
+            } else {
+
+                try {
+                    User oldUser = this.userRepository.getById(id);
+                    user.setEmail(oldUser.getEmail());
+                    user.setRole(oldUser.getRole());
+                    user.setAddresses(addressList);
+                    user.setPassword(oldUser.getPassword());
+                    user.setSecurityQuestion(oldUser.getSecurityQuestion());
+                    user.setSecurityAnswer(oldUser.getSecurityAnswer());
+                    log.info(file);
+                    if (file.getBytes().length == 0) {
+                        user.setImage(oldUser.getImage());
+                    } else {
+                        user.setImage(file.getBytes());
+                    }
+                    this.userRepository.save(user);
+                    session.setAttribute("message", new ApiResponse("User Updated Successfully", null, "alert-success"));
+                } catch (Exception e) {
+                    session.setAttribute("message", new ApiResponse(e.getLocalizedMessage(), null, "alert-danger"));
+                }
+            }
+
     }
 
     @Override
@@ -167,8 +172,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser(User user, HttpSession session) {
         this.userRepository.delete(user);
+        session.setAttribute("message", new ApiResponse("User Deleted Successfully", null, "alert-success"));
     }
 
     @Override

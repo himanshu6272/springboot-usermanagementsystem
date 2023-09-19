@@ -48,25 +48,30 @@ public class UserController {
     }
 
     @PostMapping("/editUser")
-    public String editUser(@ModelAttribute("user") User user, @RequestParam("id") int id, @RequestParam("file") MultipartFile file, HttpServletRequest request, @RequestParam("aid") String [] addressid){
+    public String editUser(@ModelAttribute("user") User user, @RequestParam("id") int id, @RequestParam("file") MultipartFile file, HttpServletRequest request){
         try {
-            this.userService.updateUserDetails(user, id, file, request, request.getSession(), addressid);
+            this.userService.updateUserDetails(user, id, file, request, request.getSession());
+            if (this.userService.getUserById(id).getRole().equals("ADMIN")){
+                return "redirect:/admin";
+            }else {
+                return "redirect:/viewPage";
+            }
         }catch (Exception e){
             request.getSession().setAttribute("message", new ApiResponse(e.getLocalizedMessage(), null, "alert-danger"));
+            return "redirect:/editPage";
         }
-        if (this.userService.getUserById(id).getRole().equals("ADMIN")){
-            return "admin";
-        }else {
-            return "redirect:/viewPage";
-        }
+//        if (request.getParameterValues("aid") == null){
+//            return "redirect:/editPage";
+//        }else
+
 
     }
 
     @GetMapping("/deleteUser")
     public String deleteUser(HttpSession session){
         int id = (int) session.getAttribute("userId");
-        this.userService.deleteUser(this.userService.getUserById(id));
-        return "admin";
+        this.userService.deleteUser(this.userService.getUserById(id), session);
+        return "redirect:/admin";
     }
 
 }

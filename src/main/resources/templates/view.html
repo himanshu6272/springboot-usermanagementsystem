@@ -14,13 +14,15 @@
     </style>
 </head>
 <body class="bg-warning">
-<header th:replace="header::header-view"></header>
-<div th:if="${session.message}" th:classappend="${session.message.status}" class="alert alert-div"
+<div th:if="${session.loggedIn == 'user'}"><header  th:replace="header::header-view"></header></div>
+<div th:if="${session.loggedIn == 'admin'}"><header  th:replace="header::header-admin"></header></div>
+<div th:if="${session.message}" th:classappend="${session.message.status}" class="alert alert-div mb-0"
      role="alert">
     <p id="message" class="p-0 m-0" th:text="${session.message.message}"></p>
     <th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
 </div>
-<div class="container mt-4 mb-4 p-3 d-flex justify-content-center text-warning">
+<div class="container mt-0 mb-4 p-3 d-flex justify-content-center text-warning">
+
     <div class="card p-4 bg-dark pb-5">
         <div class=" image d-flex flex-column justify-content-center align-items-center">
             <button class="btn btn-dark"><img th:src="${imgUrl}" height="100" width="100" style="border-radius:50%;"/>

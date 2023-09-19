@@ -22,18 +22,19 @@ public class MainController {
 
     @Autowired
     EncryptPwd encryptPwd;
+
     @RequestMapping({"/", "/home"})
     public String homePage(HttpSession session) {
-        if (session==null){
+        if (session == null) {
             return "home";
-        }else{
+        } else {
             String loggedIn = (String) session.getAttribute("loggedIn");
-            if (loggedIn == null){
+            if (loggedIn == null) {
                 return "home";
-            }else {
-                if (loggedIn.equals("admin")){
+            } else {
+                if (loggedIn.equals("admin")) {
                     return "redirect:/admin";
-                }else {
+                } else {
                     return "redirect:/viewPage";
                 }
             }
@@ -44,18 +45,18 @@ public class MainController {
 
     @GetMapping(value = "/register")
     public String form(Model model, HttpSession session) {
-        if (session==null){
+        if (session == null) {
             model.addAttribute("user", new User());
             return "register";
-        }else{
+        } else {
             String loggedIn = (String) session.getAttribute("loggedIn");
-            if (loggedIn == null){
+            if (loggedIn == null) {
                 model.addAttribute("user", new User());
                 return "register";
-            }else {
-                if (loggedIn.equals("admin")){
+            } else {
+                if (loggedIn.equals("admin")) {
                     return "redirect:/admin";
-                }else {
+                } else {
                     return "redirect:/viewPage";
                 }
             }
@@ -66,16 +67,16 @@ public class MainController {
 
     @GetMapping(value = "/login")
     public String loginPage(HttpSession session) {
-        if (session==null){
+        if (session == null) {
             return "login";
-        }else{
+        } else {
             String loggedIn = (String) session.getAttribute("loggedIn");
-            if (loggedIn == null){
+            if (loggedIn == null) {
                 return "login";
-            }else {
-                if (loggedIn.equals("admin")){
+            } else {
+                if (loggedIn.equals("admin")) {
                     return "redirect:/admin";
-                }else {
+                } else {
                     return "redirect:/viewPage";
                 }
             }
@@ -85,18 +86,18 @@ public class MainController {
 
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") int id, HttpSession session){
+    public String edit(@PathVariable("id") int id, HttpSession session) {
         session.setAttribute("userId", id);
         return "redirect:/editPage";
     }
 
     @GetMapping("/admin")
-    public String adminPage(Model model, HttpSession session, HttpServletResponse res){
+    public String adminPage(Model model, HttpSession session, HttpServletResponse res) {
         Object obj = session.getAttribute("loggedIn");
-        if (obj == null){
+        if (obj == null) {
             return "login";
-        }else if(((String) obj).equals("admin")){
-            res.setHeader("Cache-Control","no-chache,no-store,must-revalidate");
+        } else if (((String) obj).equals("admin")) {
+            res.setHeader("Cache-Control", "no-chache,no-store,must-revalidate");
             res.setHeader("Pragma", "no-chache");
             res.setDateHeader("Expires", 0);
             int id = (int) session.getAttribute("adminId");
@@ -109,30 +110,30 @@ public class MainController {
                 users.add(user);
             }
             model.addAttribute("users", users);
-            session.setAttribute("message", new ApiResponse("Admin loggedIn Successfully", null, "alert-success"));
+
             return "admin";
-        }else {
+        } else {
             return "redirect:/viewPage";
         }
     }
 
     @GetMapping("/editPage")
-    public String editPage(Model model, HttpSession session){
+    public String editPage(Model model, HttpSession session) {
         int id = (int) session.getAttribute("userId");
         User user = this.userService.getUserById(id);
-        String base64Image = "data:image/jpg;base64,"+ Base64.getEncoder().encodeToString(user.getImage())+"";
+        String base64Image = "data:image/jpg;base64," + Base64.getEncoder().encodeToString(user.getImage()) + "";
         model.addAttribute("user", user);
         model.addAttribute("imgUrl", base64Image);
         return "edit";
     }
 
     @GetMapping("/viewPage")
-    public String viewPage(Model model, HttpSession session, HttpServletResponse res){
+    public String viewPage(Model model, HttpSession session, HttpServletResponse res) {
         Object obj = session.getAttribute("loggedIn");
-        if (obj == null){
+        if (obj == null) {
             return "login";
-        }else if(((String) obj).equals("user")){
-            res.setHeader("Cache-Control","no-chache,no-store,must-revalidate");
+        } else if (((String) obj).equals("user")) {
+            res.setHeader("Cache-Control", "no-chache,no-store,must-revalidate");
             res.setHeader("Pragma", "no-chache");
             res.setDateHeader("Expires", 0);
             int id = (int) session.getAttribute("userId");
@@ -142,48 +143,50 @@ public class MainController {
             model.addAttribute("imgUrl", base64Image);
 //        session.setAttribute("message", new ApiResponse("User loggedIn Successfully", null, "alert-success"));
             return "view";
-        }else {
+        } else {
             return "redirect:/admin";
         }
     }
 
     @PostMapping("/loginUser")
-    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session){
-         boolean exist = this.userService.userExist(email);
-         User user = this.userService.getUserByEmail(email);
-         if (!exist){
-             session.setAttribute("message", new ApiResponse("User not exist with this email, please create new one!", null, "alert-danger"));
-             return "login";
-         }else if(user.getPassword().equals(this.encryptPwd.encryption(password))){
-             if (user.getRole().equals("ADMIN")){
-                 session.setAttribute("adminId", user.getId());
-                 session.setAttribute("loggedIn", "admin");
-                 return "redirect:/admin";
-             }else {
-                 session.setAttribute("userId", user.getId());
-                 session.setAttribute("loggedIn", "user");
-                 return "redirect:/viewPage";
-             }
-         }else {
-             session.setAttribute("message", new ApiResponse("Incorrect password!", null, "alert-danger"));
-             return "login";
-         }
+    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session) {
+        boolean exist = this.userService.userExist(email);
+        User user = this.userService.getUserByEmail(email);
+        if (!exist) {
+            session.setAttribute("message", new ApiResponse("User not exist with this email, please create new one!", null, "alert-danger"));
+            return "login";
+        } else if (user.getPassword().equals(this.encryptPwd.encryption(password))) {
+            if (user.getRole().equals("ADMIN")) {
+                session.setAttribute("adminId", user.getId());
+                session.setAttribute("loggedIn", "admin");
+                session.setAttribute("message", new ApiResponse("Admin loggedIn Successfully", null, "alert-success"));
+                return "redirect:/admin";
+            } else {
+                session.setAttribute("userId", user.getId());
+                session.setAttribute("loggedIn", "user");
+                session.setAttribute("message", new ApiResponse("User loggedIn Successfully", null, "alert-success"));
+                return "redirect:/viewPage";
+            }
+        } else {
+            session.setAttribute("message", new ApiResponse("Incorrect password!", null, "alert-danger"));
+            return "login";
+        }
 
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id, HttpSession session){
+    public String delete(@PathVariable("id") int id, HttpSession session) {
         session.setAttribute("userId", id);
         return "redirect:/deleteUser";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.removeAttribute("userId");
         session.removeAttribute("adminId");
         session.removeAttribute("loggedIn");
         session.setAttribute("message", new ApiResponse("LoggedOut Successfully", null, "alert-success"));
-        return "/login";
+        return "redirect:/login";
     }
 
 

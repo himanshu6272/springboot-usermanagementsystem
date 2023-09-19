@@ -18,11 +18,11 @@ public interface UserService {
 
     User getUserById(int id);
 
-    void updateUserDetails(User user, int id, MultipartFile file, HttpServletRequest request, HttpSession session, String[] addressid);
+    void updateUserDetails(User user, int id, MultipartFile file, HttpServletRequest request, HttpSession session) throws Exception;
 
     User getUserByEmail(String email);
 
-    void deleteUser(User user);
+    void deleteUser(User user, HttpSession session);
 
     void updatePassword(String email, String password, HttpSession session);
 }

@@ -28,7 +28,7 @@
                   enctype="multipart/form-data"
                   class="rounded-lg p-4">
                 <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-lg-6 col-sm-11">
                         <label for="fname">First name</label>
                         <input type="text" class="form-control" id="fname" placeholder="Enter first name"
                                name="firstName" th:classappend="${#fields.hasErrors('firstName')?'is-invalid':''}"
@@ -36,7 +36,7 @@
                         <div th:each="e : ${#fields.errors('firstName')}" th:text="${e}" class="invalid-feedback"></div>
                         <small id="fnameHelp" class="form-text"></small>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-lg-6 col-sm-11">
                         <label for="lname">Last name</label>
                         <input type="text" class="form-control" id="lname" placeholder="Enter last name"
                                name="lastName" th:classappend="${#fields.hasErrors('lastName')?'is-invalid':''}"
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-lg-6 col-sm-11">
                         <label for="mobile-number">Mobile number</label>
                         <input type="text" class="form-control" id="mobile-number" placeholder="Enter mobile number"
                                name="mobile" th:classappend="${#fields.hasErrors('mobile')?'is-invalid':''}"
@@ -54,7 +54,7 @@
                         <div th:each="e : ${#fields.errors('mobile')}" th:text="${e}" class="invalid-feedback"></div>
                         <small id="mobileHelp" class="form-text"></small>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-lg-6 col-sm-11">
                         <label for="email-address">Email address</label>
                         <input type="email" class="form-control" id="email-address" placeholder="Enter email"
                                name="email" th:classappend="${#fields.hasErrors('email')?'is-invalid':''}"
@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-lg-6 col-sm-11">
                         <div class="row">
                             <div class="form-group col-5">
                                 <label class="d-block">Role</label>
@@ -105,7 +105,7 @@
 
                 <div class="form-group">
                     <label class="d-block">Address</label>
-                    <button type="button" class="btn btn-outline-warning" id="add-address-btn" data-toggle="modal"
+                    <button type="button" class="btn btn-warning" id="add-address-btn" data-toggle="modal"
                             data-target="#staticBackdrop">Add Address
                     </button>
 
@@ -123,7 +123,7 @@
                     <!--            <button type="button" class="btn btn-primary mt-2 px-4" id="save-address-btn">Add</button>-->
                     <!--            <button type="button" class="btn btn-primary mt-2 px-3" id="cancel-address-btn">Cancel</button>-->
                     <!--          </div>-->
-                    <div class="table-container px-3 pt-3">
+                    <div class="table-container px-3 pt-3 d-none">
                         <table class="table table-bordered">
                             <thead class="bg-dark">
                             <tr>
@@ -136,22 +136,12 @@
                             </tr>
                             </thead>
                             <tbody id="addresses"></tbody>
-                            <tfoot class="bg-dark">
-                            <tr>
-                                <th>Street</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Zip</th>
-                                <th>Country</th>
-                                <th>Action</th>
-                            </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-lg-6 col-sm-11">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" placeholder="Password"
                                name="password" th:classappend="${#fields.hasErrors('password')?'is-invalid':''}"
@@ -159,7 +149,7 @@
                         <div th:each="e : ${#fields.errors('password')}" th:text="${e}" class="invalid-feedback"></div>
                         <small id="passwordHelp" class="form-text"></small>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-lg-6 col-sm-11">
                         <label for="cnf-password">Confirm password</label>
                         <input type="password" class="form-control" id="cnf-password" placeholder="Confirm password"
                                name="cnfPassword" th:classappend="${#fields.hasErrors('password')?'is-invalid':''}"
@@ -170,7 +160,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-lg-6 col-sm-11">
                         <label for="security-que">Security question: </label>
                         <select class="form-control" name="securityQuestion" id="security-que">
                             <option>Who is your favourite Bollywood Star?</option>
@@ -188,7 +178,7 @@
                         <small id="securityanswerHelp" class="form-text"></small>
                     </div>
 
-                    <div class="form-group col-6 mt-4">
+                    <div class="form-group col-lg-6 col-sm-11 mt-4">
                         <label for="profile-photo">Profile Photo</label><br>
                         <input type="file" id="profile-photo" name="file">
                         <small id="profilephotoHelp" class="form-text"></small>
@@ -201,7 +191,7 @@
         </div>
     </div>
 </div>
-<!--<button type="button" class="btn btn-outline-warning py-0" data-toggle="modal" data-target="#staticBackdrop">View</button>-->
+<!--<button type="button" class="btn btn-warning py-0" data-toggle="modal" data-target="#staticBackdrop">View</button>-->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -224,12 +214,12 @@
                     <small id="zipHelp" class="form-text mt-0 text-danger"></small>
                     <input type="text" class="form-control mt-2" id="inputCountry" placeholder="County">
                     <small id="countryHelp" class="form-text mt-0 text-danger"></small>
-                    <button type="button" class="btn btn-outline-warning mt-2 px-5" id="save-address-btn">Add</button>
+<!--                    <button type="button" class="btn btn-warning mt-2 px-5" id="save-address-btn">Add</button>-->
                 </div>
 
             </div>
             <div class="modal-footer bg-dark">
-                <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" id="save-address-btn">Add Address</button>
             </div>
         </div>
     </div>

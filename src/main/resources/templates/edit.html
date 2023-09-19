@@ -8,27 +8,33 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body class="bg-warning">
-<header th:replace="header::header-view"></header>
+<div th:if="${session.loggedIn == 'user'}"><header  th:replace="header::header-view"></header></div>
+<div th:if="${session.loggedIn == 'admin'}"><header  th:replace="header::header-admin"></header></div>
 <div class="container">
     <div class="bg-dark">
         <h2 class="text-center text-warning py-3 m-0">Edit User Details</h2>
     </div>
+    <div th:if="${session.message}" th:classappend="${session.message.status}" class="alert alert-div mb-0"
+         role="alert">
+        <p id="message" class="p-0 m-0" th:text="${session.message.message}"></p>
+        <th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
+    </div>
     <form th:action="@{/editUser}" class="bg-secondary text-warning pb-4" method="post" th:object="${user}"
           enctype="multipart/form-data">
         <div class="row m-0">
-            <div class="col-5 p-5 px-0">
+            <div class="col-lg-5 col-sm-11 p-5 px-0">
                 <div class="text-center">
                     <div id="img-div">
                         <img id="profile-img" th:src="${imgUrl}" alt="" class="img-fluid"
                              height="100%" width="100%">
                     </div>
-                    <button type="button" class="btn btn-outline-warning mt-3" id="update-image-btn">Update Profile
+                    <button type="button" class="btn btn-warning mt-3" id="update-image-btn">Update Profile
                         Image
                     </button>
                     <input id="select-file-btn" type="file" class="d-none" name="file">
                 </div>
             </div>
-            <div class="col-7 py-5 pr-5 ">
+            <div class="col-lg-7 col-sm-11 py-5 pr-5 ">
                 <div class="border border-solid border-warning h-100 p-4" style="border-radius:10px;">
                     <input hidden="hidden" name="id" th:value="${user.id}">
                     <label for="fname" class="m-0 pt-2">First Name</label>
@@ -55,7 +61,7 @@
                     <label for="others">Others</label>
                     <small id="genderHelp" class="form-text text-danger mt-0"></small>
 
-                    <div class="form-group fake-input">
+                    <div class="form-group fake-input w-100">
                         <label for="dob">Date of Birth</label><br>
                         <input type="text" class="form-control" id="dob" name="dob" th:value="${user.dob}">
                         <img th:src="@{/images/calender.png}" id="calendar-icon" width="20px" height="20px">
@@ -69,11 +75,11 @@
         <div class="form-group px-4">
 
             <label class="d-block ml-3">Address</label>
-            <button type="button" class="btn btn-outline-warning ml-3" id="add-address-btn" data-toggle="modal"
+            <button type="button" class="btn btn-warning ml-3" id="add-address-btn" data-toggle="modal"
                     data-target="#staticBackdrop">Add Address
             </button>
-            <div class="table-container px-3 pt-3">
-                <table class="table table-bordered">
+            <div class="table-container px-3 pt-3 w-100">
+                <table class="table table-bordered table-responsive">
                     <thead class="bg-dark">
                     <tr>
                         <th>Street</th>
@@ -98,16 +104,6 @@
                         </td>
                     </tr>
                     </tbody>
-                    <tfoot class="bg-dark">
-                    <tr>
-                        <th>Street</th>
-                        <th>City</th>
-                        <th>State</th>
-                        <th>Zip</th>
-                        <th>Country</th>
-                        <th>Action</th>
-                    </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
@@ -138,12 +134,12 @@
                     <small id="zipHelp" class="form-text mt-0 text-danger"></small>
                     <input type="text" class="form-control mt-2" id="inputCountry" placeholder="County">
                     <small id="countryHelp" class="form-text mt-0 text-danger"></small>
-                    <button type="button" class="btn btn-outline-warning mt-2 px-5" id="save-address-btn">Add</button>
+<!--                    <button type="button" class="btn-warning mt-2 px-5" id="save-address-btn">Add</button>-->
                 </div>
 
             </div>
             <div class="modal-footer bg-dark">
-                <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" id="save-address-btn">Add Address</button>
             </div>
         </div>
     </div>
