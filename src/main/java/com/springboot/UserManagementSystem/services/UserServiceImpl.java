@@ -42,12 +42,13 @@ public class UserServiceImpl implements UserService {
 
     //    @Autowired
 //    private CheckValidation validation;
-    public void createUser(User user, MultipartFile file, String cnfPassword, HttpSession session) {
+    public void createUser(User user, MultipartFile file, String cnfPassword, HttpSession session) throws Exception {
         List<Address> addresses = user.getAddresses();
         String message = validData(user, cnfPassword);
 //        List<String> errors = new ArrayList<>();
         if (addresses == null) {
-            session.setAttribute("message", new ApiResponse("Please add at least one address!!", null, "alert-danger"));
+            throw new Exception("Please add at least one address!!");
+//            session.setAttribute("message", new ApiResponse("", null, "alert-danger"));
         } else if (!message.equals("valid")) {
             session.setAttribute("message", new ApiResponse(message, null, "alert-danger"));
         } else {
@@ -84,14 +85,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserDetails(User user, int id, MultipartFile file, HttpServletRequest request, HttpSession session) throws Exception {
-        String[] street = request.getParameterValues("street");
-        String[] city = request.getParameterValues("city");
-        String[] state = request.getParameterValues("state");
-        String[] country = request.getParameterValues("country");
-        String[] zip = request.getParameterValues("zip");
-        String[] addressid = request.getParameterValues("aid");
-
+    public void updateUserDetails(User user, int id, MultipartFile file, String[] addressid, HttpSession session) throws Exception {
         List<Address> addressList = new ArrayList<>();
         List<Address> newAddresses = user.getAddresses();
         if (newAddresses != null) {
@@ -101,25 +95,13 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        if(street != null) {
-            for (int i = 0; i < street.length; i++) {
-                Address address = new Address();
-                address.setAid(Integer.parseInt(addressid[i]));
-                address.setStreet(street[i]);
-                address.setCity(city[i]);
-                address.setCountry(country[i]);
-                address.setZip(zip[i]);
-                address.setState(state[i]);
-                address.setUser(user);
-                addressList.add(address);
-            }
-        }
+        if (addressid != null) {
 
             List<Address> addresses = this.addressRepository.getAddressByUserId(user.getId());
             int index = 0;
             int oldAddressid[] = new int[addresses.size()];
             int addressIdLength = 0;
-            if(addressid != null) {
+            if (addressid != null) {
                 addressIdLength = addressid.length;
             }
             int count = 0;
@@ -130,25 +112,26 @@ public class UserServiceImpl implements UserService {
                     if (oldAddressid[index] == addrssid) {
                         count++;
                     } else {
-                        if (addressList.size() != 0){
+                        if (addressList.size() != 0) {
                             this.addressRepository.deleteAddress(address.getAid());
                             log.info("address deleted");
-                        }else {
+                        } else {
                             throw new Exception("Please add at least one address!");
                         }
 
                         //user Address deleted
                     }
                 } else {
-                    if (addressList.size() != 0){
+                    if (addressList.size() != 0) {
                         this.addressRepository.deleteAddress(address.getAid());
                         log.info("address deleted");
-                    }else {
+                    } else {
                         throw new Exception("Please add at least one address!");
                     }
                 }
                 index++;
             }
+        }
 
             if (addressList.size() == 0) {
                 session.setAttribute("message", new ApiResponse("Please add at least one address!", null, "alert-danger"));

@@ -1,12 +1,33 @@
 $(document).ready(function () {
 
+
+
+
         if($(".table-bordered").find('tr').length == 1){
                 $(".table-container").addClass('d-none');
             }else{
                  $(".table-container").removeClass('d-none');
             }
 
-
+    var manageAddresses = function(){
+        let addresses = $("#addresses").find("tr");
+                    for(let i = 0; i<addresses.length;i++){
+                    let address = addresses[i];
+                    let aid = address.getElementsByClassName("aid")[0];
+                    let street = address.getElementsByClassName("street")[0];
+                    let city = address.getElementsByClassName("city")[0];
+                    let state = address.getElementsByClassName("state")[0];
+                    let zip = address.getElementsByClassName("zip")[0];
+                    let country = address.getElementsByClassName("country")[0];
+                    aid.setAttribute("name", "addresses["+i+"].aid");
+                    street.setAttribute("name", "addresses["+i+"].street");
+                    city.setAttribute("name", "addresses["+i+"].city");
+                    state.setAttribute("name", "addresses["+i+"].state");
+                    zip.setAttribute("name", "addresses["+i+"].zip");
+                    country.setAttribute("name", "addresses["+i+"].country");
+                    }
+    }
+    manageAddresses();
 
   var flag = true;
   let message = $("#message").text();
@@ -104,11 +125,11 @@ $(document).ready(function () {
     } else {
       $("#zipHelp").empty();
       $("#countryHelp").empty();
-      let addElement = '<tr><td><input hidden name="addressId"><input readonly class="street" name="addresses[' + id + '].street" value="' + street +
-        '"></td><td><input readonly class="city" name="addresses[' + id + '].city" value="' + city +
-        '"></td><td><input readonly class="state" name="addresses[' + id + '].state" value="' + state +
-        '"></td><td><input readonly class="zip" name="addresses[' + id + '].zip" value="' + zip +
-        '"></td><td><input readonly class="country" name="addresses[' + id + '].country" value="' + country +
+      let addElement = '<tr><td><input hidden="hidden" name="addressid"><input type="number" class="aid" name="aid" hidden="hidden" value="0"><input readonly class="street" name="addresses['+id+'].street" value="' + street +
+        '"></td><td><input readonly class="city" name="addresses['+id+'].city" value="' + city +
+        '"></td><td><input readonly class="state" name="addresses['+id+'].state" value="' + state +
+        '"></td><td><input readonly class="zip" name="addresses['+id+'].zip" value="' + zip +
+        '"></td><td><input readonly class="country" name="addresses['+id+'].country" value="' + country +
         '"></td><td><input class="btn btn-warning py-0 px-1 edit-address-btn" type="button" value="Update"></td></tr>';
       //                let addElement = '<div class="address border border-black p-2 m-3"><input hidden name="addressId"<label>Street</label><br><input readonly class="street form-control" name="addresses['+id+'].street" value="'+street+
       //                            '"><label>City</label><br><input readonly class="city form-control" name="addresses['+id+'].city" value="'+city+
@@ -117,6 +138,7 @@ $(document).ready(function () {
       //                            '"><label>Country</label><br><input readonly class="country form-control" name="addresses['+id+'].country" value="'+country+
       //                            '"></div><small class="form-text addressesHelp"></small></div>';
       $("#addresses").append(addElement);
+      manageAddresses();
       $(".table-container").removeClass("d-none");
       $("#staticBackdrop").modal('hide');
       $("#inputStreet").val("");
@@ -142,7 +164,9 @@ $(document).ready(function () {
                     $(".table-container").addClass('d-none');
                 }else{
                      $(".table-container").removeClass('d-none');
-                }
+                     manageAddresses();
+
+    }
 
   });
 

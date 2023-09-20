@@ -11,14 +11,14 @@ import java.util.List;
 
 
 public interface UserService {
-    public void createUser(User user, MultipartFile file, String cnfPassword, HttpSession session);
+    public void createUser(User user, MultipartFile file, String cnfPassword, HttpSession session) throws Exception;
     public boolean userExist(String email);
 
     List<User> getAllUsers();
 
     User getUserById(int id);
 
-    void updateUserDetails(User user, int id, MultipartFile file, HttpServletRequest request, HttpSession session) throws Exception;
+    void updateUserDetails(User user, int id, MultipartFile file, String[] addressid, HttpSession session) throws Exception;
 
     User getUserByEmail(String email);
 

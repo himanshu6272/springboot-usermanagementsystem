@@ -1,6 +1,7 @@
 package com.springboot.UserManagementSystem.controllers;
 
 import com.springboot.UserManagementSystem.Exceptions.ApiResponse;
+import com.springboot.UserManagementSystem.models.Address;
 import com.springboot.UserManagementSystem.models.User;
 import com.springboot.UserManagementSystem.services.UserService;
 import com.springboot.UserManagementSystem.utils.Message;
@@ -33,7 +34,7 @@ public class UserController {
         log.info(br);
         try {
             if (br.hasErrors()) {
-                throw new Exception("Please fill all the fields!!");
+                throw new Exception("Please fill the all valid addresses field!");
             }
             this.userService.createUser(user, file, cnfPassword, session);
             return "redirect:/login";
@@ -47,16 +48,21 @@ public class UserController {
     }
 
     @PostMapping("/editUser")
-    public String editUser(@ModelAttribute("user") User user, @RequestParam("id") int id, @RequestParam("file") MultipartFile file, HttpServletRequest request){
+    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult br, @RequestParam("id") int id, @RequestParam("file") MultipartFile file, @RequestParam("addressid") String[] addressid, HttpSession session){
         try {
-            this.userService.updateUserDetails(user, id, file, request, request.getSession());
-            if (this.userService.getUserById(id).getRole().equals("ADMIN")){
+            if (br.hasErrors()) {
+                log.info(br);
+                throw new Exception("Please fill the all valid addresses field!");
+            } else{
+                this.userService.updateUserDetails(user, id, file, addressid, session);
+            if (this.userService.getUserById(id).getRole().equals("ADMIN")) {
                 return "redirect:/admin";
-            }else {
+            } else {
                 return "redirect:/viewPage";
             }
+        }
         }catch (Exception e){
-            request.getSession().setAttribute("message", new ApiResponse(e.getLocalizedMessage(), null, "alert-danger"));
+            session.setAttribute("message", new ApiResponse(e.getLocalizedMessage(), null, "alert-danger"));
             return "redirect:/editPage";
         }
 //        if (request.getParameterValues("aid") == null){

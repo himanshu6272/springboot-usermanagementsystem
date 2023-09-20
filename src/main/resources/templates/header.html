@@ -18,7 +18,10 @@
 
 <header th:fragment="header-view">
     <nav class="navbar navbar-light sticky-top font-weight-bold p-3">
+        <a th:href="@{/viewPage}" class="btn btn-warning ml-5" id="view-home-btn">Home</a>
+        <div class="mr-5">
             <a th:href="@{/logout}" class="btn btn-warning logout-btn">Logout</a>
+        </div>
     </nav>
 </header>
 

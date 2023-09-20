@@ -17,4 +17,14 @@ public class SessionHelper {
         }
 
     }
+
+    public void removeErrorsFromSession(){
+        try{
+            HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+            session.removeAttribute("errors");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 }

@@ -36,7 +36,7 @@
             </div>
             <div class="col-lg-7 col-sm-11 py-5 pr-5 ">
                 <div class="border border-solid border-warning h-100 p-4" style="border-radius:10px;">
-                    <input hidden="hidden" name="id" th:value="${user.id}">
+                    <input hidden="hidden" name="id" th:value="${user.id}"><input hidden="hidden" name="email" th:value="${user.email}"><input hidden="hidden" name="securityQuestion" th:value="${user.securityQuestion}"><input hidden="hidden" name="securityAnswer" th:value="${user.securityAnswer}"><input hidden="hidden" name="role" th:value="${user.role}"><input hidden="hidden" name="password" th:value="${user.password}">
                     <label for="fname" class="m-0 pt-2">First Name</label>
                     <input type="text" id="fname" class="form-control" th:value="${user.firstName}" name="firstName">
                     <small id="fnameHelp" class="form-text"></small>
@@ -92,12 +92,12 @@
                     </thead>
                     <tbody id="addresses">
                     <tr th:each="address : ${user.addresses}">
-                        <td><input name="aid" hidden="hidden" th:value="${address.aid}"><input readonly
+                        <td><input hidden="hidden" name="addressid" th:value="${address.aid}"><input class="aid" name="aid" hidden="hidden" th:value="${address.aid}"><input class="street" readonly
                                                                                     th:value="${address.street}" name="street"></td>
-                        <td><input readonly th:value="${address.city}" name="city"></td>
-                        <td><input readonly th:value="${address.state}" name="state"></td>
-                        <td><input readonly th:value="${address.zip}" name="zip"></td>
-                        <td><input readonly th:value="${address.country}" name="country"></td>
+                        <td><input class="city" readonly th:value="${address.city}" name="city"></td>
+                        <td><input class="state" readonly th:value="${address.state}" name="state"></td>
+                        <td><input class="zip" readonly th:value="${address.zip}" name="zip"></td>
+                        <td><input class="country" readonly th:value="${address.country}" name="country"></td>
                         <td>
                             <input class="btn btn-warning py-0 px-1 remove-address-btn" type="button" value="Remove">
                             <input class="btn btn-warning py-0 px-1 edit-address-btn" type="button" value="Update">
@@ -150,12 +150,14 @@
 <script th:src="@{/js/custom.js}"></script>
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <script>
+    $(document).ready(function(){
     $("#dob").datepicker({
       dateFormat: "yy-mm-dd",
       maxDate: 0,
       changeMonth: true,
       changeYear: true,
       yearRange: "-100:+0"
+    });
     });
 </script>
 
