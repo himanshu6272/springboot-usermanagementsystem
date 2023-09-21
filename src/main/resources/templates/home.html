@@ -7,7 +7,7 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body class="bg-warning">
-<header th:replace="header::header-main"></header>
+<header th:replace="~{header::header-main}"></header>
 <div class="container div-cont">
   <div class="row">
     <div class="jumbotron col mb-0 text-warning mt-5 bg-dark">
@@ -21,6 +21,6 @@
     </div>
   </div>
 </div>
-<footer th:replace="footer::footer"></footer>
+<footer th:replace="~{footer::footer}"></footer>
 </body>
 </html>

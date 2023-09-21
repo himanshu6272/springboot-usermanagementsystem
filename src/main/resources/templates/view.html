@@ -14,8 +14,8 @@
     </style>
 </head>
 <body class="bg-warning">
-<div th:if="${session.loggedIn == 'user'}"><header  th:replace="header::header-view"></header></div>
-<div th:if="${session.loggedIn == 'admin'}"><header  th:replace="header::header-admin"></header></div>
+<div th:if="${session.loggedIn == 'user'}"><header  th:replace="~{header::header-view}"></header></div>
+<div th:if="${session.loggedIn == 'admin'}"><header  th:replace="~{header::header-admin}"></header></div>
 <div th:if="${session.message}" th:classappend="${session.message.status}" class="alert alert-div mb-0"
      role="alert">
     <p id="message" class="p-0 m-0" th:text="${session.message.message}"></p>
@@ -39,7 +39,7 @@
         </div>
     </div>
 </div>
-<footer th:replace="footer::footer"></footer>
+<footer th:replace="~{footer::footer}"></footer>
 <script th:src="@{/js/jQuery%203.6.4.js}"></script>
 <script th:src="@{/js/custom.js}"></script>
 

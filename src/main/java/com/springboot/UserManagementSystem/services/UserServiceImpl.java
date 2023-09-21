@@ -146,7 +146,6 @@ public class UserServiceImpl implements UserService {
                     user.setPassword(oldUser.getPassword());
                     user.setSecurityQuestion(oldUser.getSecurityQuestion());
                     user.setSecurityAnswer(oldUser.getSecurityAnswer());
-                    log.info(file);
                     if (file.getBytes().length == 0) {
                         user.setImage(oldUser.getImage());
                     } else {

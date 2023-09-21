@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body class="bg-warning">
-<header th:replace="header::header-main"></header>
+<header th:replace="~{header::header-main}"></header>
 <div class="container div-cont">
     <div class="row w-50 mx-auto">
         <div class="col bg-secondary text-center login-user-icon-div p-2 rounded-top mt-5">
@@ -46,7 +46,7 @@
         </div>
     </div>
 </div>
-<footer th:replace="footer::footer"></footer>
+<footer th:replace="~{footer::footer}"></footer>
 <script th:src="@{/js/jQuery%203.6.4.js}"></script>
 <script th:src="@{/js/custom.js}"></script>
 </body>

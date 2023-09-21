@@ -10,7 +10,7 @@
 
 </head>
 <body class="bg-warning text-warning">
-<header th:replace="header::header-main"></header>
+<header th:replace="~{header::header-main}"></header>
 <div class="container">
     <div class="row" id="register-user-header">
         <div class="col bg-dark text-center user-icon-div p-3">
@@ -224,7 +224,7 @@
         </div>
     </div>
 </div>
-<footer th:replace="footer::footer"></footer>
+<footer th:replace="~{footer::footer}"></footer>
 <script th:src="@{/js/jQuery 3.6.4.js}"></script>
 <script th:src="@{/js/jquery-ui.js}"></script>
 <script th:src="@{/js/custom.js}"></script>

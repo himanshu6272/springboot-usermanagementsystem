@@ -43,6 +43,7 @@ public class MainController {
 
     }
 
+
     @GetMapping(value = "/register")
     public String form(Model model, HttpSession session) {
         if (session == null) {

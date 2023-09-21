@@ -15,7 +15,7 @@
     </style>
 </head>
 <body class="bg-warning">
-<header th:replace="header::header-admin"></header>
+<header th:replace="~{header::header-admin}"></header>
 <div class="container-fluid bg-dark text-warning" style="width:80%">
     <div th:if="${session.message}" th:classappend="${session.message.status}" class="alert alert-div"
          role="alert">
@@ -62,7 +62,7 @@
         </tfoot>
     </table>
 </div>
-<footer th:replace="footer::footer"></footer>
+<footer th:replace="~{footer::footer}"></footer>
 
 <script th:src="@{/js/jQuery%203.6.4.js}"></script>
 <script th:src="@{/js/datatable.min.js}"></script>
